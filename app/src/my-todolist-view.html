@@ -1,0 +1,43 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox-item/paper-checkbox-item.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/polymer-tinymce/polymer-tinymce.html"> 
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-todolist-view">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+        <h1>Today To-Do List</h1>
+        <paper-button>Add!</paper-button>
+        <paper-button>Save!</paper-button>
+        <paper-checkbox-item><polymer-tinymce></polymer-tinymce></paper-checkbox-item>
+        <paper-checkbox-item><polymer-tinymce></polymer-tinymce></paper-checkbox-item>
+        <paper-checkbox-item><polymer-tinymce></polymer-tinymce></paper-checkbox-item>
+        <paper-checkbox-item><polymer-tinymce></polymer-tinymce></paper-checkbox-item>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-todolist-view',
+    });
+  </script>
+</dom-module>
