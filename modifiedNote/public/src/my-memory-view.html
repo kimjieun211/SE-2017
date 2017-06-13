@@ -1,0 +1,97 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/input-search/input-search.html"> 
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html"> 
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-memory-view">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment shared-styles">  
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      paper-material.note{
+        width: 300px;
+        padding: 20px;
+        margin: 10px;
+        background-color: #CEF279;
+      }
+    </style>
+
+   <div class="card"> 
+        <h1>Memory</h1>
+        <p>you can search your note!</p>
+        <input-search class="searcher"></input-search>
+
+        <style>
+            .searcher {
+                border: 0;
+                background: #7cb342;
+                color: #fff;
+                border-radius: 22px;
+                padding: 0 8px;
+            }
+        </style>
+
+    <div class="card flex layout horizontal wrap start"> 
+        <template is="dom-repeat" items="[[notes]]"> 
+        <paper-material class="note" elevation="1">{{item.content}}<br></br>{{item.created}}<br></br><paper-button raised class="indigo" id="deleteButton">DELETE!</paper-button></paper-material> 
+        </template>
+    </div>     
+
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-memory-view',
+      ready: function(){
+        var request = document.createElement('iron-ajax');
+        this.notes = [];
+        var self = this;
+        request.handleAs = 'json';
+        request.method = 'post';
+        request.url = '/api/list/';
+        var req = request.generateRequest();
+        req.completes.then(function(response){
+            console.log(self.notes);
+            for (let item of response.response.item){
+                console.log(item);
+                self.push('notes', item);
+            }
+        });
+      },
+      next: function(){ 
+        Polymer.dom(this.root).querySelector('#deleteButton').addEventListener('tap', this._delete.bind(this)); 
+      }, 
+       _delete: function(){ 
+         var request = document.createElement('iron-ajax'); 
+         request.handleAs = 'json'; 
+         request.method = 'post'; 
+         request.url = '/api/rem/'; 
+         var req = request.generateRequest(); 
+         req.completes.then(function(response){ 
+             console.log(self.notes); 
+             for (let item of response.response.item){ 
+                 console.log(item); 
+                 self.remove('notes', item); 
+             }   
+         }); 
+       },    
+    });
+  </script>
+</dom-module>
